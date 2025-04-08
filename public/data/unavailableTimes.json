@@ -1,0 +1,52 @@
+[
+    {
+      "date": "2025-04-07",
+      "start_time": "18:00",
+      "end_time": "21:00",
+      "description": "INFO 5521"
+    },
+    {
+      "date": "2025-04-08",
+      "start_time": "14:30",
+      "end_time": "17:30",
+      "description": "INFO 575"
+    },
+    {
+        "date": "2025-04-09",
+        "start_time": "14:30",
+        "end_time": "17:30",
+        "description": "INFO 558"
+    },
+    {
+        "date": "2025-04-10",
+        "start_time": "18:00",
+        "end_time": "21:00",
+        "description": "INFO 563"
+    },
+    {
+        "date": "2025-04-14",
+        "start_time": "18:00",
+        "end_time": "21:00",
+        "description": "INFO 5521"
+      },
+      {
+        "date": "2025-04-15",
+        "start_time": "14:30",
+        "end_time": "17:30",
+        "description": "INFO 575"
+      },
+      {
+          "date": "2025-04-16",
+          "start_time": "14:30",
+          "end_time": "17:30",
+          "description": "INFO 558"
+      },
+      {
+          "date": "2025-04-17",
+          "start_time": "18:00",
+          "end_time": "21:00",
+          "description": "INFO 563"
+      }
+
+    
+]
