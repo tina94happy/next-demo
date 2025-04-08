@@ -1,85 +1,111 @@
-# 📅 Connect Weekly Availability Scheduler
+# 🗓️ next-demo
 
-This project is a responsive, interactive weekly scheduling component built with **Next.js**. It is designed to display a student's availability throughout the week and highlight their class or busy times using data-driven input from a JSON file.
-
----
-
-## 📁 Project Structure
-
-```
-/src
-  /components
-    Schedule.tsx       # Main scheduler component
-  /styles
-    Schedule.module.css # Style for schedule UI
-/public
-  /data
-    unavailableTimes.json # Source of unavailable blocks
-```
+A modern scheduling demo built with **Next.js** and **Supabase**, featuring real-time updates, a weekly availability table, and serverless deployment on **Vercel**.
 
 ---
 
-## 📄 Sample JSON Format
+## 🚀 Features
 
-```json
-[
-  {
-    "date": "2025-04-07",
-    "start_time": "18:00",
-    "end_time": "21:00",
-    "description": "I have class"
-  },
-  {
-    "date": "2025-04-08",
-    "start_time": "14:30",
-    "end_time": "17:30",
-    "description": "Lab"
-  }
-]
-```
-
-- `date` format: `YYYY-MM-DD`
-- `start_time` and `end_time` use 24hr format (`HH:mm`)
-- `description`: shown centered in the unavailable block
+- 🔥 Built with **Next.js App Router**
+- 📅 Weekly availability UI with visual time slots
+- 🌐 Real-time sync using **Supabase Realtime**
+- 🧪 Unit tests with **Jest**
+- ☁️ Deployed on **Vercel**
+- 🔐 Auth-ready (via Supabase)
+- 🗄️ Database & Storage powered by Supabase
 
 ---
 
-## 🧪 Local Development
+## 🧪 Supabase Table Schema
+
+| Column       | Type   | Description                     |
+|--------------|--------|---------------------------------|
+| `id`         | int8   | Primary key (auto increment)    |
+| `date`       | text   | The date of the unavailable slot |
+| `start_time` | text   | Start time of the slot          |
+| `end_time`   | text   | End time of the slot            |
+| `description`| text   | Description of the slot         |
+
+---
+
+## 📂 Project Structure
+
+```txt
+.
+├── __tests__/              # Unit tests (Jest)
+│   └── supabase.test.ts
+├── public/                 # Static assets (e.g. icons, data)
+├── src/
+│   ├── app/                # App Router pages
+│   ├── components/         # UI components (like Schedule)
+│   └── lib/                # Supabase client setup
+├── jest.config.js          # Jest setup
+├── next.config.ts          # Next.js configuration
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+---
+
+## 🛠️ Setup Instructions
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-username/next-demo.git
+cd next-demo
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
-npm run dev
 ```
-Visit `http://localhost:3000` to view the schedule.
 
----
+### 3. Add environment variables
 
-## 🌎 Deployment
+Add the following env variable to your supabase:
 
-This app is optimized for deployment to [Vercel](https://vercel.com).
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 4. Run locally
 
 ```bash
-vercel
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+---
+
+## ✅ Run Tests
+
+```bash
+npm test
 ```
 
 ---
 
-## 📌 Notes
+## ☁️ Deploy to Vercel
 
-- Dates are computed locally based on system time (supports Central Time)
-- Schedule automatically adjusts for week and date ranges
-- Description shown **only once**, centered in the block
-
----
-
-## ✨ Future Ideas
-
-- Click-to-add availability / edit mode
-- Google Calendar integration
-- Mobile responsive view
-- Dark mode theme
+1. Push to GitHub
+2. Go to [vercel.com](https://vercel.com/)
+3. Import your GitHub repo
+4. Add your Supabase environment variables in Vercel settings
+5. Deploy!
 
 ---
 
-Made with 💻 by Tina
+## 📄 License
 
+MIT
+
+---
+
+## 🙋‍♀️ Author
+
+Tina Su
