@@ -76,8 +76,31 @@ export default function Schedule() {
       }
       setLoading(false);
     };
+  
     fetchUnavailableTimes();
+  
+    // ⭐ 加入 Realtime 訂閱
+    const channel = supabase
+      .channel('realtime-unavailable-times')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // 或者指定 'INSERT' | 'UPDATE' | 'DELETE'
+          schema: 'public',
+          table: 'unavailable_times',
+        },
+        (payload) => {
+          console.log('🟡 Supabase change detected:', payload);
+          fetchUnavailableTimes(); // 變更時重新撈資料
+        }
+      )
+      .subscribe();
+  
+    return () => {
+      supabase.removeChannel(channel); // 離開頁面時清除訂閱
+    };
   }, []);
+  
 
   useEffect(() => {
     const base = new Date();
