@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './Schedule.module.css';
+import { supabase } from '@/lib/supabase';
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -17,7 +18,6 @@ function getWeekDates(startDate: Date): Date[] {
   const mondayOffset = day === 0 ? -6 : 1 - day;
   const monday = new Date(startDate);
   monday.setDate(startDate.getDate() + mondayOffset);
-
   for (let i = 0; i < 7; i++) {
     const d = new Date(monday);
     d.setDate(monday.getDate() + i);
@@ -41,11 +41,9 @@ function isSlotWithin(start: string, end: string, slot: string): boolean {
   const [sh, sm] = start.split(':').map(Number);
   const [eh, em] = end.split(':').map(Number);
   const [ch, cm] = slot.split(':').map(Number);
-
   const startMin = sh * 60 + sm;
   const endMin = eh * 60 + em;
   const slotMin = ch * 60 + cm;
-
   return slotMin >= startMin && slotMin < endMin;
 }
 
@@ -60,16 +58,41 @@ function getMiddleSlot(start: string, end: string, slots: string[]): string | nu
 export default function Schedule() {
   const [weekOffset, setWeekOffset] = useState(0);
   const [unavailableBlocks, setUnavailableBlocks] = useState<{ date: string; start_time: string; end_time: string; description: string }[]>([]);
+  const [currentWeek, setCurrentWeek] = useState<Date[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    fetch('/data/unavailableTimes.json')
-      .then((res) => res.json())
-      .then((data) => setUnavailableBlocks(data))
-      .catch((err) => console.error('Failed to load unavailable times:', err));
+    const fetchUnavailableTimes = async () => {
+      setLoading(true);
+      const { data, error } = await supabase.from('unavailable_times').select();
+      if (error) {
+        console.error('❌ Supabase fetch error:', error);
+        setErrorMessage('Failed to load schedule from Supabase.');
+      } else {
+        console.log('✅ Supabase data:', data);
+        setUnavailableBlocks(data);
+        setErrorMessage('');
+      }
+      setLoading(false);
+    };
+    fetchUnavailableTimes();
   }, []);
 
-  const currentWeek = getWeekDates(new Date(Date.now() + weekOffset * 7 * 24 * 60 * 60 * 1000));
+  useEffect(() => {
+    const base = new Date();
+    base.setDate(base.getDate() + weekOffset * 7);
+    setCurrentWeek(getWeekDates(base));
+  }, [weekOffset]);
+
+  if (loading) return <p style={{ textAlign: 'center' }}>Loading schedule...</p>;
+  if (errorMessage) return <p style={{ color: 'red', textAlign: 'center' }}>{errorMessage}</p>;
+  if (currentWeek.length === 0) return null;
+
+
+
   const displayWeek = `${getFormattedDate(currentWeek[0])} - ${getFormattedDate(currentWeek[6])}`;
+  
 
   return (
     <div className={styles.container}>
@@ -121,3 +144,6 @@ export default function Schedule() {
     </div>
   );
 }
+
+
+
